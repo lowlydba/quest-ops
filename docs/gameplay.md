@@ -44,7 +44,7 @@ The data branch's bestiary has every foe, its tiers and its lore.
 
 You wield one weapon and wear one accessory. A new item is equipped automatically when it's rarer than what you have; otherwise it goes in your bag. A spare of something you already own is sold on the spot for the merchant's price. Weapons are class-locked, while accessories suit anyone. When a quest finds an item, the output shows its stats, any set it belongs to, and whether it was equipped or bagged and why.
 
-Every weapon and accessory, with its damage, rarity, effect and lore, is in the data branch's [reliquary](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/README.md), or run `questops codex`.
+Rarer loot is gated by level: rare items start dropping at level 3 and legendary items at level 5, and both get likelier as you level up. Every weapon and accessory, with its damage, rarity, effect and lore, is in the data branch's [reliquary](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/README.md), or run `questops codex`.
 
 ### Sets
 
