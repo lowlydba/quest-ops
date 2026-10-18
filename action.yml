@@ -1,5 +1,5 @@
 name: QuestOps CI Dungeon
-description: One text-dungeon encounter per CI run. Success wins the fight, failure loses it, and your hero persists.
+description: Every CI run is a dungeon encounter. Green builds win fights. Red builds lose them. Your hero grows with you.
 author: QuestOps
 branding:
   icon: shield
