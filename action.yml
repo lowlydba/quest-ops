@@ -1,5 +1,5 @@
-name: QuestOps
-description: Add one classic text-dungeon encounter to your workflow. Runs when the job ends; success wins the fight, failure loses it, and your hero persists on a data branch.
+name: QuestOps CI Dungeon
+description: One text-dungeon encounter per CI run. Success wins the fight, failure loses it, and your hero persists.
 author: QuestOps
 branding:
   icon: shield
