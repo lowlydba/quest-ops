@@ -18,7 +18,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: lowlysre/questops@v1
+      - uses: lowlydba/quest-ops@v1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: npm test
 ```
@@ -31,12 +31,12 @@ Give each leaderboard its own `data-branch`. Each branch keeps its own heroes, q
 
 ```yaml
 # .github/workflows/backend.yml
-- uses: lowlysre/questops@v1
+- uses: lowlydba/quest-ops@v1
   with:
     data-branch: questops-backend
 
 # .github/workflows/frontend.yml
-- uses: lowlysre/questops@v1
+- uses: lowlydba/quest-ops@v1
   with:
     data-branch: questops-frontend
 ```
@@ -64,7 +64,7 @@ steps:
       private-key: ${{ secrets.QUESTOPS_APP_PRIVATE_KEY }}
       repositories: questops-guild
       permission-contents: write
-  - uses: lowlysre/questops@v1
+  - uses: lowlydba/quest-ops@v1
     with:
       data-repo: your-org/questops-guild
       data-token: ${{ steps.guild.outputs.token }}

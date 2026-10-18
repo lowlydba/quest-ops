@@ -8,7 +8,7 @@ permissions:
   actions: read # reads how the job went
 
 steps:
-  - uses: lowlysre/questops@v1
+  - uses: lowlydba/quest-ops@v1
   - run: npm test
 ```
 
@@ -58,7 +58,7 @@ If a ruleset or branch protection covers every branch, exclude the data branch, 
 Pull requests from forks get a read-only token, so the push fails with a warning. To give fork contributors a one-off encounter instead, use:
 
 ```yaml
-- uses: lowlysre/questops@v1
+- uses: lowlydba/quest-ops@v1
   with:
     persist: ${{ github.event.pull_request.head.repo.fork != true }}
 ```
@@ -99,7 +99,7 @@ Each hero plays once per commit. Re-running a workflow, or two jobs in one workf
 
 ## Other CI systems and local use
 
-Install from a checkout with `pip install .`, straight from GitHub with `pipx install git+https://github.com/lowlydba/questops`, or build the Docker image. QuestOps is not published to PyPI or a container registry yet. The CLI detects the player, commit and run from GitHub Actions, GitLab CI, Azure Pipelines and Jenkins environment variables. detects the player, commit and run from GitHub Actions, GitLab CI, Azure Pipelines and Jenkins environment variables.
+Install from a checkout with `pip install .`, straight from GitHub with `pipx install git+https://github.com/lowlydba/quest-ops`, or build the Docker image. QuestOps is not published to PyPI or a container registry yet. The CLI detects the player, commit and run from GitHub Actions, GitLab CI, Azure Pipelines and Jenkins environment variables. detects the player, commit and run from GitHub Actions, GitLab CI, Azure Pipelines and Jenkins environment variables.
 
 ```sh
 bash scripts/data-branch.sh pull ./data questops-data "$REPO_URL"

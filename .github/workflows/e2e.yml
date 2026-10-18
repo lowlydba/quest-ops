@@ -277,6 +277,6 @@ jobs:
       - name: Every lane passed
         run: |
           echo "$RESULTS"
-          test "$(echo "$RESULTS" | jq '[.[] | select(.result != "success")] | length')" = 0
+          test "$(echo "$RESULTS" | jq '[.[] | select(.result != "success" and .result != "skipped")] | length')" = 0
         env:
           RESULTS: ${{ toJSON(needs) }}

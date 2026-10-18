@@ -6,23 +6,23 @@ One CI run is one text-dungeon encounter. The CLI/Action plays it, stores heroes
 
 | Path | What lives there |
 |---|---|
-| `src/quest-opsengine.py` | Encounters, `MONSTERS`, `TIERS` (Senior / Skip Level), `ACHIEVEMENTS`; records a typed transcript |
-| `src/quest-opsfight.py` | One monster fight (3 rounds, fate decides the last): spells, weapon quirks, accessory effects and set bonuses |
-| `src/quest-opsspells.py` | `SPELLS` (unlock level, MP, effect); only a Wizard holding a staff casts |
-| `src/quest-opsevents.py` | Transcript events (`Art`, `Narration`, `Round`, `Retreat`); every renderer consumes these |
-| `src/quest-opsitems.py` | `ITEMS` (`Item`: name, rarity, category, slot, class, damage bonus), `SETS` (weapon + accessory pairs), rarity weights, equip rules (weapons are class-locked) |
-| `src/quest-opslore.py` | `LORE` (every monster and item), `ROOM_LORE` (every scene), `SPELL_LORE`, `ITEM_EFFECTS`, `TIER_LORE` |
-| `src/quest-opssprites.py` | Pixel sprites and palettes (`SPRITES`, `MONSTER_RAMPS`, `MONSTER_TIERS`, `ITEM_SPRITES`); builds pixel grids |
-| `src/quest-opspixels.py` | Pixel grid (`Px`) and swappable cell backends: `half` (default), `square`, `plain`; coalesces same-colour runs. `QUESTOPS_PIXELS=half\|square\|plain` overrides (never auto-switched in CI) |
-| `src/quest-opsscenes.py` | Background scenes a monster stands in (`SCENES`: corridor, torches, stairs, castle; `suit` swaps the castle for blue stone behind the slime and the wyrm), computed in RGB and snapped to xterm-256; `TIER_LIGHT` tints the stone per tier. `game.play` picks one with `pick_scene` from its own hash of the seed, so the dice are untouched; colour output only |
-| `src/quest-opspages.py` | Generates every lore page and image (`lore_files`): bestiary, reliquary (with Sets), `lore/spellbook.md`, the merchant's page |
-| `src/quest-opsmerchant.py` | The traveling merchant: a bot run rolls a d20 and only a natural 20 summons it (`QUESTOPS_MERCHANT_ODDS` maps to a threshold; prices in `items.SELL_PRICE`) |
-| `src/quest-opsrender.py`, `art.py`, `svg.py`, `title.py` | Terminal card, layout helpers, character card SVG, hall of heroes, title |
-| `src/quest-opspresentation.py` | `Presentation`: ephemeral (`--dry-run`) / colour / pixel backend, and the one place that decides what is shown and how wide |
-| `src/quest-opscli.py` | argparse and wiring only |
-| `src/quest-opsgame.py` | `play()` / `play_merchant()` return a `Quest` / `MerchantRun` (hero, result, log entry, outputs); no I/O |
-| `src/quest-opssite.py` | Writes the data branch: cards, badges, lore, log page, hall; saves the hero and appends the log |
-| `src/quest-opsci.py` | CI environment detection, step summary and step outputs |
+| `src/questops/engine.py` | Encounters, `MONSTERS`, `TIERS` (Senior / Skip Level), `ACHIEVEMENTS`; records a typed transcript |
+| `src/questops/fight.py` | One monster fight (3 rounds, fate decides the last): spells, weapon quirks, accessory effects and set bonuses |
+| `src/questops/spells.py` | `SPELLS` (unlock level, MP, effect); only a Wizard holding a staff casts |
+| `src/questops/events.py` | Transcript events (`Art`, `Narration`, `Round`, `Retreat`); every renderer consumes these |
+| `src/questops/items.py` | `ITEMS` (`Item`: name, rarity, category, slot, class, damage bonus), `SETS` (weapon + accessory pairs), rarity weights, equip rules (weapons are class-locked) |
+| `src/questops/lore.py` | `LORE` (every monster and item), `ROOM_LORE` (every scene), `SPELL_LORE`, `ITEM_EFFECTS`, `TIER_LORE` |
+| `src/questops/sprites.py` | Pixel sprites and palettes (`SPRITES`, `MONSTER_RAMPS`, `MONSTER_TIERS`, `ITEM_SPRITES`); builds pixel grids |
+| `src/questops/pixels.py` | Pixel grid (`Px`) and swappable cell backends: `half` (default), `square`, `plain`; coalesces same-colour runs. `QUESTOPS_PIXELS=half\|square\|plain` overrides (never auto-switched in CI) |
+| `src/questops/scenes.py` | Background scenes a monster stands in (`SCENES`: corridor, torches, stairs, castle; `suit` swaps the castle for blue stone behind the slime and the wyrm), computed in RGB and snapped to xterm-256; `TIER_LIGHT` tints the stone per tier. `game.play` picks one with `pick_scene` from its own hash of the seed, so the dice are untouched; colour output only |
+| `src/questops/pages.py` | Generates every lore page and image (`lore_files`): bestiary, reliquary (with Sets), `lore/spellbook.md`, the merchant's page |
+| `src/questops/merchant.py` | The traveling merchant: a bot run rolls a d20 and only a natural 20 summons it (`QUESTOPS_MERCHANT_ODDS` maps to a threshold; prices in `items.SELL_PRICE`) |
+| `src/questops/render.py`, `art.py`, `svg.py`, `title.py` | Terminal card, layout helpers, character card SVG, hall of heroes, title |
+| `src/questops/presentation.py` | `Presentation`: ephemeral (`--dry-run`) / colour / pixel backend, and the one place that decides what is shown and how wide |
+| `src/questops/cli.py` | argparse and wiring only |
+| `src/questops/game.py` | `play()` / `play_merchant()` return a `Quest` / `MerchantRun` (hero, result, log entry, outputs); no I/O |
+| `src/questops/site.py` | Writes the data branch: cards, badges, lore, log page, hall; saves the hero and appends the log |
+| `src/questops/ci.py` | CI environment detection, step summary and step outputs |
 | `dist/index.js`, `action.yml` | GitHub Action shim (post-job hook) |
 
 ## When you change items, monsters, tiers or achievements

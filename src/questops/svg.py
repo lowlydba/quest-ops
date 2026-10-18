@@ -17,6 +17,7 @@ from .sprites import ITEM_RAMPS, ITEM_SPRITES, _mirror, _pixel
 from .state import Character, xp_for_level
 
 RARITY_HEX = {"common": "#3fb950", "uncommon": "#e3b341", "rare": "#58a6ff", "legendary": "#a371f7"}
+PROJECT_REPO = "lowlydba/quest-ops"
 
 
 def xterm_hex(n: int) -> str:
@@ -131,7 +132,7 @@ def card(ch: Character) -> str:
 {_t(f"{ch.wins}W / {ch.losses}L  ({rate})", 420, 177, 13, "#c9d1d9")}
 <line x1="24" y1="184" x2="{w - 24}" y2="184" stroke="#21262d"/>
 {gear}{ach}
-<a href="https://github.com/lowlysre/questops">{_t("github.com/lowlysre/questops", w - 24, 330, 10, "#6e7681", anchor="end")}</a>
+<a href="https://github.com/{PROJECT_REPO}">{_t(f"github.com/{PROJECT_REPO}", w - 24, 330, 10, "#6e7681", anchor="end")}</a>
 </svg>
 """
 
