@@ -69,6 +69,7 @@ def active_set(main_hand: str, accessory: str) -> ItemSet | None:
     weapon, worn = parse(main_hand)[0], parse(accessory)[0]
     return next((s for s in SETS if s.weapon == weapon and s.accessory == worn), None)
 RARITY_WEIGHT = {"common": 50, "uncommon": 28, "rare": 14, "legendary": 2}
+RARITY_MIN_LEVEL = {"common": 1, "uncommon": 1, "rare": 3, "legendary": 5}
 # What the traveling merchant pays for an unequipped item, in 'kens.
 SELL_PRICE = {"common": 15, "uncommon": 45, "rare": 140, "legendary": 600}
 RARITY_RANK = {"common": 0, "uncommon": 1, "rare": 2, "legendary": 3}

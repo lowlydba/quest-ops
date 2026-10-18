@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from . import items
 from .events import Art, Event, Narration, Retreat
 from .fight import Fight, d
-from .items import ITEMS, RARITY_WEIGHT, label
+from .items import ITEMS, RARITY_MIN_LEVEL, RARITY_WEIGHT, label
 from .state import Character
 
 # name, art, min_level, hp, ac, to_hit, dmg_die, xp, kens, taunts (base, Senior, Skip Level)
@@ -104,9 +104,12 @@ class Result:
         return [e.text for e in self.transcript if not isinstance(e, Art)]
 
 def roll_loot(rng: random.Random, ch: Character, bonus: int = 0) -> str:
-    """Rarer finds get likelier with level; weapons of other classes turn up less often."""
+    """Rarer finds are gated by level and get likelier with it; weapons of other classes turn up less often."""
     weights = []
     for it in ITEMS:
+        if ch.level < RARITY_MIN_LEVEL[it.rarity]:
+            weights.append(0)
+            continue
         w = RARITY_WEIGHT[it.rarity] + (bonus if it.rarity != "common" else 0)
         weights.append(w if items.usable(label(it.name, it.rarity), ch.cls) else max(w // 5, 1))
     it = rng.choices(ITEMS, weights=weights)[0]

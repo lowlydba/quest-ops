@@ -107,6 +107,15 @@ def _loot_run(monkeypatch, loot, **setup):
     return ch, engine.run_encounter(ch, True, random.Random(1), "treasure")
 
 
+def test_rarer_loot_is_gated_by_level():
+    for level, allowed in ((1, {"common", "uncommon"}), (3, {"common", "uncommon", "rare"}), (5, set(items.RARITY_RANK))):
+        ch = Character(name="x", cls="Wizard", level=level)
+        rng = random.Random(level)
+        found = {items.parse(engine.roll_loot(rng, ch, 50))[1] for _ in range(2000)}
+        assert found <= allowed
+        assert "uncommon" in found
+
+
 def test_the_engine_records_what_loot_replaced(monkeypatch):
     ch, r = _loot_run(monkeypatch, "Hotfix [rare]", main_hand="Rusty Dagger [common]")
     assert r.loot_action == "equipped" and r.replaced == "Rusty Dagger [common]"
