@@ -3,18 +3,20 @@
   "achievements": [],
   "best_streak": 1,
   "cls": "Wizard",
-  "encounters": 2,
+  "encounters": 3,
   "inventory": [],
-  "kens": 37,
-  "kills": {},
-  "last_encounter": "Defeated by the Cache Slime",
+  "kens": 53,
+  "kills": {
+    "Cache Slime": 1
+  },
+  "last_encounter": "Slew the Cache Slime",
   "level": 1,
-  "loss_run": 1,
+  "loss_run": 0,
   "losses": 1,
   "main_hand": "Staff of Regex [rare]",
   "name": "lowlydba",
-  "streak": 0,
+  "streak": 1,
   "titles": [],
-  "wins": 1,
-  "xp": 65
+  "wins": 2,
+  "xp": 110
 }
