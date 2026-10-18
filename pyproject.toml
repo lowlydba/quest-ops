@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "questops"
+version = "0.1.0"
+description = "A one-encounter text dungeon crawl for your CI pipeline."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+questops = "questops.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/questops"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 100

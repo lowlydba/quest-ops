@@ -1,0 +1,62 @@
+name: QuestOps
+description: Add one classic text-dungeon encounter to your workflow. Runs when the job ends; success wins the fight, failure loses it, and your hero persists on a data branch.
+author: QuestOps
+branding:
+  icon: shield
+  color: purple
+
+inputs:
+  outcome:
+    description: "Override the result: success or failure. Leave as auto to read how the job actually went (needs actions: read)."
+    required: false
+    default: auto
+  player:
+    description: Hero name. Defaults to the workflow actor.
+    required: false
+    default: ${{ github.actor }}
+  ignore:
+    description: "Players and bots that never play, separated by commas, spaces or newlines. Matching ignores case, and * matches anything, so '*[bot], octocat' keeps every bot and octocat out of the dungeon. Nothing is played or saved for them."
+    required: false
+    default: ""
+  data-branch:
+    description: Branch that stores character sheets and the quest log.
+    required: false
+    default: questops-data
+  data-repo:
+    description: "owner/repo that holds the data branch. Defaults to this repository. Point several repositories at one to share a leaderboard (needs data-token)."
+    required: false
+    default: ""
+  data-token:
+    description: Token that pushes the data branch. Defaults to token; for another repository use a GitHub App token or a fine-grained PAT with contents write there.
+    required: false
+    default: ""
+  persist:
+    description: "Push results to the data branch (needs contents write permission). Set false for a one-off encounter: nothing is saved and no stats are shown."
+    required: false
+    default: "true"
+  comment:
+    description: "On pull request events, post the encounter as one compact comment (the hero's card and a one-line result, with the story collapsed) that later runs edit instead of adding another (needs pull-requests write permission; pull requests from forks get a read-only token and only a warning)."
+    required: false
+    default: "false"
+  summary:
+    description: "Write the encounter to the job summary. Set false to keep the summary page clear; the job log and the pull request comment are unaffected."
+    required: false
+    default: "true"
+  kind:
+    description: "Force an encounter: combat, treasure, trap, or random."
+    required: false
+    default: random
+  seed:
+    description: Fix the RNG for reproducible runs.
+    required: false
+    default: ""
+  token:
+    description: Token used to read the job result and push the data branch.
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  using: node24
+  main: dist/index.js
+  post: dist/index.js
+  post-if: always()

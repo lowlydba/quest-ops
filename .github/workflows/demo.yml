@@ -1,0 +1,30 @@
+name: demo
+# This repository plays its own game, so the data branch doubles as a live demo: the Hall of Heroes,
+# the bestiary and the reliquary are all browsable on the questops-data branch.
+# Pushes to main play one persistent encounter; pull requests get a one-off one as a sticky comment.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: demo-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  play:
+    name: play one encounter
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+      pull-requests: write # the action comments on pull requests
+    steps:
+      - uses: $/
+        with:
+          persist: ${{ github.event_name != 'pull_request' }}
+          comment: ${{ github.event_name == 'pull_request' }}
+      - run: echo "tests pass"

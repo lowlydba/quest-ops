@@ -1,0 +1,30 @@
+name: image
+on:
+  pull_request:
+    paths: [Dockerfile, pyproject.toml, "src/**", "scripts/**", ".github/workflows/image.yml"]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: true
+
+# Builds the image only. To publish to ghcr.io once the repo is final, add a `push` trigger for
+# version tags, set `push: true` below, and log in with docker/login-action (packages: write).
+jobs:
+  build:
+    name: build image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          push: false
+          tags: questops:ci

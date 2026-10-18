@@ -1,0 +1,282 @@
+name: e2e
+# Plays the action against real GitHub: the jobs API, the token scopes, and the data branch race.
+# Each run writes to its own throwaway branch, which the last job deletes.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DATA_BRANCH: e2e-${{ github.run_id }}-${{ github.run_attempt }}
+  PYTHONUTF8: "1"
+
+jobs:
+  race:
+    name: race ${{ matrix.n }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1, 2, 3, 4, 5, 6]
+    steps:
+      - uses: $/
+        with:
+          player: e2e-hero-${{ matrix.n }}
+          data-branch: ${{ env.DATA_BRANCH }}
+      - run: echo "tests pass"
+
+  win:
+    name: passing job
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-win
+          data-branch: ${{ env.DATA_BRANCH }}
+      - run: echo "tests pass"
+
+  lose:
+    name: failing job
+    runs-on: ubuntu-latest
+    # The job is meant to fail; continue-on-error keeps the workflow itself green.
+    continue-on-error: true
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-lose
+          data-branch: ${{ env.DATA_BRANCH }}
+      - run: exit 1
+
+  soft-fail:
+    name: continue-on-error step
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-soft
+          data-branch: ${{ env.DATA_BRANCH }}
+      - run: exit 1
+        continue-on-error: true
+
+  dedupe:
+    name: one commit, two plays
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-dup
+          data-branch: ${{ env.DATA_BRANCH }}
+      - uses: $/
+        with:
+          player: e2e-dup
+          data-branch: ${{ env.DATA_BRANCH }}
+
+  dry-run:
+    name: persist false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action would push the data branch; the test proves it does not
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-dry
+          persist: "false"
+          data-branch: ${{ env.DATA_BRANCH }}
+
+  bot:
+    name: bot actor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+    steps:
+      - uses: $/
+        with:
+          player: e2e-test[bot]
+          data-branch: ${{ env.DATA_BRANCH }}
+
+  merchant:
+    name: bot rolls a natural 20
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # seeds a shopper, then the action pushes the sale
+      actions: read # the action reads this job's step results
+    env:
+      MERCHANT_BRANCH: e2e-${{ github.run_id }}-${{ github.run_attempt }}-merchant
+      QUESTOPS_MERCHANT_ROLL: "20" # test hook: force the natural 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Seed a hero with a full bag
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash scripts/data-branch.sh pull "$RUNNER_TEMP/seed" "$MERCHANT_BRANCH" "$url"
+          python3 tests/e2e/seed_shopper.py "$RUNNER_TEMP/seed"
+          bash scripts/data-branch.sh push "$RUNNER_TEMP/seed" "$MERCHANT_BRANCH" "e2e: seed a shopper"
+          rm -rf "$RUNNER_TEMP/seed"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: $/
+        with:
+          player: e2e-merchant[bot]
+          data-branch: ${{ env.MERCHANT_BRANCH }}
+
+  sticky-comment:
+    name: sticky pull request comment
+    # A fork's token is read-only, so only pull requests from this repository can comment.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the action pushes the data branch
+      actions: read # the action reads this job's step results
+      pull-requests: write # the action comments on the pull request
+    steps:
+      # Two heroes on one pull request must share one comment.
+      - uses: $/
+        with:
+          player: e2e-sticky-a
+          comment: "true"
+          data-branch: ${{ env.DATA_BRANCH }}
+      - uses: $/
+        with:
+          player: e2e-sticky-b
+          comment: "true"
+          data-branch: ${{ env.DATA_BRANCH }}
+
+  verify-comment:
+    name: verify the sticky comment
+    needs: sticky-comment
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # reads the comments, then deletes the test comment
+    steps:
+      - run: |
+          comments=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$PR/comments" \
+            --jq '.[] | select(.body | contains("<!-- questops:sticky:e2e:sticky-comment -->")) | {id, body}' | jq -s '.')
+          count=$(jq length <<<"$comments")
+          echo "sticky comments on the pull request: $count"
+          jq -r '.[].body' <<<"$comments"
+          jq -r '.[].id' <<<"$comments" | while read -r id; do
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/issues/comments/$id"
+          done
+          test "$count" -eq 1
+          jq -e '.[0].body | test("e2e-sticky-[ab]")' <<<"$comments"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+
+  merchant-gift:
+    name: bot rolls a natural 20 for an empty-handed hero
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # seeds a hero with nothing, then the action pushes the gift
+      actions: read # the action reads this job's step results
+    env:
+      GIFT_BRANCH: e2e-${{ github.run_id }}-${{ github.run_attempt }}-gift
+      QUESTOPS_MERCHANT_ROLL: "20" # test hook: force the natural 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Seed a hero with nothing
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash scripts/data-branch.sh pull "$RUNNER_TEMP/seed" "$GIFT_BRANCH" "$url"
+          python3 tests/e2e/seed_shopper.py "$RUNNER_TEMP/seed" newbie
+          bash scripts/data-branch.sh push "$RUNNER_TEMP/seed" "$GIFT_BRANCH" "e2e: seed an empty-handed hero"
+          rm -rf "$RUNNER_TEMP/seed"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: $/
+        with:
+          player: e2e-gift[bot]
+          data-branch: ${{ env.GIFT_BRANCH }}
+
+  verify:
+    name: verify the data branch
+    needs: [race, win, lose, soft-fail, dedupe, dry-run, bot, merchant, merchant-gift]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checks out the code and the data branches
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.DATA_BRANCH }}
+          path: data
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.DATA_BRANCH }}-merchant
+          path: data-merchant
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.DATA_BRANCH }}-gift
+          path: data-gift
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - run: python tests/e2e/verify.py data data-merchant data-gift
+        env:
+          PYTHONPATH: src
+
+  cleanup:
+    name: prune old data branches
+    needs: verify
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # deletes superseded throwaway data branches
+    steps:
+      # The newest run's branches stay so the job summaries' card images can still be inspected.
+      - run: |
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/e2e-" --jq '.[].ref | sub("^refs/heads/"; "")' \
+            | grep -vxF -e "$DATA_BRANCH" -e "$DATA_BRANCH-merchant" -e "$DATA_BRANCH-gift" \
+            | while read -r branch; do
+                gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch" || true
+              done
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  are-we-good:
+    name: e2e are-we-good
+    if: always()
+    needs: [verify, verify-comment]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Every lane passed
+        run: |
+          echo "$RESULTS"
+          test "$(echo "$RESULTS" | jq '[.[] | select(.result != "success")] | length')" = 0
+        env:
+          RESULTS: ${{ toJSON(needs) }}

@@ -1,0 +1,18 @@
+name: e2e-act
+# Local smoke test: `act -W .github/act/e2e-act.yml`. act does not implement the Actions jobs API,
+# so the outcome is passed in; the real auto-detection is covered by .github/workflows/e2e.yml.
+on: workflow_dispatch
+
+jobs:
+  win:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./
+        with: { outcome: success, persist: "false", seed: e2e-win }
+      - run: echo "tests pass"
+  lose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./
+        with: { outcome: failure, persist: "false", seed: e2e-loss }
+      - run: echo "tests fail"
