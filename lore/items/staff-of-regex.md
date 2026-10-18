@@ -10,6 +10,6 @@ A weak weapon, but only a Wizard holding a staff can cast spells.
 
 **Effect:** Spells cost 1 MP less (never below 1), but about one cast in six matches too much and also hits you.
 
-**Set:** part of [Dependency Hell](../README.md#-sets), with the Lockfile Locket.
+**Set:** part of [Dependency Hellfire](../README.md#-sets), with the Lockfile Locket.
 
 [← Back to the reliquary](../README.md)

@@ -8,7 +8,7 @@
 
 **Effect:** Blocks the first hit the foe lands on you each fight (never the finishing blow of a lost fight).
 
-**Set:** part of [Dependency Hell](../README.md#-sets), with the Staff of Regex.
+**Set:** part of [Dependency Hellfire](../README.md#-sets), with the Staff of Regex.
 
 **Set:** part of [Zero Trust](../README.md#-sets), with the Sudo Shiv.
 

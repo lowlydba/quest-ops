@@ -4,7 +4,7 @@
 
 | # | Hero | Class | Lv | XP | W/L | Streak | Equipped |
 |---|---|---|---|---|---|---|---|
-| 🥇 | [lowlydba](characters/lowlydba.svg) | Wizard | 1 | 110 | 2/1 | 1 | [Staff of Regex](lore/items/staff-of-regex.md) |
+| 🥇 | [lowlydba](characters/lowlydba.svg) | Wizard | 1 | 165 | 3/1 | 2 | [Staff of Regex](lore/items/staff-of-regex.md) |
 
 <table>
 <tr><td width="50%" valign="top"><img src="characters/lowlydba.svg" alt="lowlydba" width="100%"></td><td width="50%"></td></tr>

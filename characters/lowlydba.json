@@ -1,22 +1,25 @@
 {
   "accessory": "",
   "achievements": [],
-  "best_streak": 1,
+  "best_streak": 2,
   "cls": "Wizard",
-  "encounters": 3,
-  "inventory": [],
-  "kens": 53,
+  "encounters": 4,
+  "inventory": [
+    "Intern's Staff [common]"
+  ],
+  "kens": 71,
   "kills": {
-    "Cache Slime": 1
+    "Cache Slime": 1,
+    "Lint Goblin": 1
   },
-  "last_encounter": "Slew the Cache Slime",
+  "last_encounter": "Slew the Lint Goblin",
   "level": 1,
   "loss_run": 0,
   "losses": 1,
   "main_hand": "Staff of Regex [rare]",
   "name": "lowlydba",
-  "streak": 1,
+  "streak": 2,
   "titles": [],
-  "wins": 2,
-  "xp": 110
+  "wins": 3,
+  "xp": 165
 }

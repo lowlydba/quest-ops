@@ -62,7 +62,7 @@ Wear both halves of a pair and the set bonus applies in combat.
 | Set | Weapon | Accessory | Effect | Lore |
 |---|---|---|---|---|
 | **Hotfix Friday** | Hotfix | Cloak of Mild Inconvenience | Hotfix backfires are absorbed: no damage to you. | Ship it on Friday, wrap it in a cloak, and call the incident 'mild'. The postmortem has been rescheduled indefinitely. |
-| **Dependency Hell** | Staff of Regex | Lockfile Locket | The Staff of Regex's 'matches too much' never hurts you. | The lockfile pins every wildcard to a version nobody dares to bump. It is stable, in the way a fossil is stable. |
+| **Dependency Hellfire** | Staff of Regex | Lockfile Locket | The Staff of Regex's 'matches too much' never hurts you. | The lockfile pins every wildcard to a version nobody dares to bump. It is stable, in the way a fossil is stable. |
 | **Retry Loop** | Hard Reset | Ring of Retries | Removes the Ring of Retries' -2 to hit in the early rounds. | Turn it off, rewind it, turn it off again. Eventually the loop exits, mostly out of embarrassment. |
 | **Pair Programming** | Squeaky Mallet | Lucky Rubber Duck | +1 to hit in round 1. | One of you types and the other squeaks. Somehow the first commit is still the best one. |
 | **Zero Trust** | Sudo Shiv | Lockfile Locket | Ignores armour for the whole fight: your attacks cannot miss. | Verify everything, pin everything, and stab anyone who asks for a token. Nobody has ever filed a ticket about it twice. |
