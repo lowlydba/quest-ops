@@ -1,25 +1,27 @@
 {
-  "accessory": "",
-  "achievements": [],
-  "best_streak": 3,
+  "accessory": "Crown of the Main Branch [legendary]",
+  "achievements": [
+    "Crowned (equipped the Crown)"
+  ],
+  "best_streak": 4,
   "cls": "Wizard",
-  "encounters": 5,
+  "encounters": 6,
   "inventory": [
     "Intern's Staff [common]"
   ],
-  "kens": 95,
+  "kens": 128,
   "kills": {
     "Cache Slime": 1,
     "Lint Goblin": 1
   },
-  "last_encounter": "Disarmed a trap",
+  "last_encounter": "Looted a treasure chest",
   "level": 1,
   "loss_run": 0,
   "losses": 1,
   "main_hand": "Staff of Regex [rare]",
   "name": "lowlydba",
-  "streak": 3,
+  "streak": 4,
   "titles": [],
-  "wins": 4,
-  "xp": 231
+  "wins": 5,
+  "xp": 309
 }
