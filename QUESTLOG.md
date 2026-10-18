@@ -2,6 +2,7 @@
 
 | When (UTC) | Hero | Result | Encounter | XP | Commit | Quest |
 |---|---|---|---|---|---|---|
+| 2026-10-18 21:27 | lowlydba | ✅ | Slew the Cache Slime | 63 | [`dda2040`](https://github.com/lowlydba/quest-ops/commit/dda2040a72b0d6ac2d80fdd6d87a417871cea445) | lowlydba/quest-ops / demo |
 | 2026-10-18 21:12 | lowlydba | ✅ | Looted a treasure chest | 78 | [`05a2a6d`](https://github.com/lowlydba/quest-ops/commit/05a2a6d8fe481871f2b9fe2c7a12ea0f8faa6d91) | lowlydba/quest-ops / demo |
 | 2026-10-18 21:11 | lowlydba | ✅ | Disarmed a trap | 66 | [`c607fce`](https://github.com/lowlydba/quest-ops/commit/c607fcebc599f441cd291f517f0a76d263ed6ab8) | lowlydba/quest-ops / demo |
 | 2026-10-18 21:05 | lowlydba | ✅ | Slew the Lint Goblin | 55 | [`e323207`](https://github.com/lowlydba/quest-ops/commit/e3232078a4c87b15ae6532979200b65dba78d536) | lowlydba/quest-ops / demo |
