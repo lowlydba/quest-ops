@@ -233,7 +233,7 @@ test("summary: false keeps the encounter out of the job summary but not the comm
   resetEnv(prEnv({ GITHUB_STEP_SUMMARY: summary }));
   mockComments(t, []);
   await shim.post();
-  assert.match(fs.readFileSync(summary, "utf8"), /QuestOps/);
+  assert.match(fs.readFileSync(summary, "utf8"), /quest-ops);
 });
 
 test("comment posts the encounter on the pull request once", async (t) => {

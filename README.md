@@ -69,9 +69,9 @@ They're static files, so there's no server, and they're as fresh as your last bu
 
 This repository plays its own game on every push to main, so its data branch is a working example you can browse:
 
-- [Hall of Heroes](https://github.com/lowlydba/questops/tree/questops-data): the leaderboard and every hero's card.
-- [Bestiary and reliquary](https://github.com/lowlydba/questops/blob/questops-data/lore/README.md): lore for every monster, item, set and spell.
-- [Quest log](https://github.com/lowlydba/questops/blob/questops-data/QUESTLOG.md): every encounter so far.
+- [Hall of Heroes](https://github.com/lowlydba/quest-opstree/questops-data): the leaderboard and every hero's card.
+- [Bestiary and reliquary](https://github.com/lowlydba/quest-opsblob/questops-data/lore/README.md): lore for every monster, item, set and spell.
+- [Quest log](https://github.com/lowlydba/quest-opsblob/questops-data/QUESTLOG.md): every encounter so far.
 
 Pull requests get a one-off encounter as a single comment that later pushes edit (`comment: true`), without touching the leaderboard.
 
