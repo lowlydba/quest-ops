@@ -19,7 +19,7 @@ from .scenes import staged, suit
 from .sprites import SPRITES, render as render_pixels, shadow, sprite, tier_ramps
 from . import items
 from .sprites import item_icon
-from .state import Character, Store, slug, xp_for_level
+from .state import TOH, Character, Store, money, slug, xp_for_level
 
 
 RARITY_COLORS = {"common": 77, "uncommon": 220, "rare": 75, "legendary": 135}
@@ -89,8 +89,25 @@ def rainbow(text: str, color: bool) -> str:
     return "".join(out)
 
 
-HERO_COLOR, KENS_COLOR, FOE_COLOR, DAMAGE_COLOR, SPELL_COLOR, WEARY_COLOR = 255, 220, 203, 196, 141, 244
+HERO_COLOR, KENS_COLOR, FOE_COLOR, DAMAGE_COLOR, SPELL_COLOR, WEARY_COLOR = 255, 172, 203, 196, 141, 244
+TOH_COLOR = 250  # silver; 'kens are bronze
 
+
+COIN = "\u25cf"
+
+
+def _coins_md(kens: int) -> str:
+    toh, rest = divmod(kens, TOH)
+    return " ".join(([f"🥈 **{toh:,} toh**"] if toh else []) + ([f"🥉 **{rest:,} 'kens**"] if rest or not toh else []))
+
+
+def purse(kens: int, color: bool, suffix: str = "") -> str:
+    """A balance as `money` writes it, each denomination behind its own coin: silver for toh, bronze for 'kens."""
+    toh, rest = divmod(kens, TOH)
+    out = [_s(COIN, TOH_COLOR, color) + " " + _s(f"{toh:,} toh", TOH_COLOR, color, True)] if toh else []
+    if rest or not toh:
+        out.append(_s(COIN, KENS_COLOR, color) + " " + _s(f"{rest:,} 'kens", KENS_COLOR, color))
+    return " ".join(out) + (_s(suffix, KENS_COLOR, color) if suffix else "")
 
 def item_tag(item: str, color: bool) -> str:
     """An item as [Name], bold in its rarity's colour: the one way a named item looks in the story, the cards and the summaries."""
@@ -192,16 +209,17 @@ def transcript(ch: Character, r: Result, context: str = "", pres: Presentation |
         name_lines = [_s(ch.name, 255, color, True), f"the {_s(ch.cls, CLASS_COLORS.get(ch.cls, 7), color)}"]
     if pres.show_stats:
         name_lines[-1] += _s(lv, 220, color, True)
-        kens = _s("\u25cf", 220, color) + " " + _s(f"{ch.kens:,} {chr(39)}kens", 220, color)
+        kens = purse(ch.kens, color)
         if r.kens:
-            kens += f" ({_s(f'{r.kens:+,d}', 77 if r.kens >= 0 else 196, color)})"
+            kens += f" ({_s(f'{r.kens:+,d}', KENS_COLOR if r.kens >= 0 else 196, color)})"
         xp_line = f"XP {xp_bar(ch.xp - _base(ch), ch.next_level_xp - _base(ch), width=16, color=color)} " + _s(f"(+{r.xp:,})", 77, color)
         broken = any(isinstance(e, Retreat) and e.streak for e in r.transcript)
         if r.success:
             streak = _s(f"\u25b2 streak {ch.streak}", 51, color)
         else:  # a loss never points up: down when it cost a streak, plain when there was none to lose
             streak = _s("\u25bc streak 0", 196, color) if broken else _s("streak 0", 244, color)
-        right = [*name_lines, xp_line, kens + "   " + streak]
+        wallet = [kens + "   " + streak] if pad + 3 + visible_len(kens) + 3 + visible_len(streak) <= inner else [kens, streak]  # a big purse pushes the streak down
+        right = [*name_lines, xp_line, *wallet]
         if r.levels:
             right.append(_s(f"LEVEL UP! Now level {ch.level}", 220, color, True))
     else:
@@ -211,6 +229,8 @@ def transcript(ch: Character, r: Result, context: str = "", pres: Presentation |
 
     def wrap(lines: list[str], indent: int) -> list[str]:
         return [_s(w, 244, color, italic=True) for ln in lines for w in textwrap.wrap(ln, max(inner - indent, 20))]
+
+    rule = _s("\u2500" * inner, 238, color) if color else ""  # a faint divider in the blank row between sections, so the card gets no taller
 
     def label(item: str) -> str:
         return item_tag(item, color) + " " + _s(items.parse(item)[1], 244, color, italic=True)
@@ -226,7 +246,7 @@ def transcript(ch: Character, r: Result, context: str = "", pres: Presentation |
             text = [label(item) + _s("  NEW!", 77, color), *wrap(facts, pad + 3)]
         else:
             text = [label(item), _s(slot_name, 244, color, italic=True)]
-        gear_rows += ([""] if gear_rows else []) + side_by_side(item_icon(items.category(item), pres.pixels), text, pad)
+        gear_rows += ([rule] if gear_rows else []) + side_by_side(item_icon(items.category(item), pres.pixels), text, pad)
     if r.loot and r.loot_action in ("bag", "sold") and pres.show_gear:
         status = loot_status(ch, r)
         note = "Bagged: " + status.split(": ", 1)[-1] if r.loot_action == "bag" else status
@@ -239,7 +259,7 @@ def transcript(ch: Character, r: Result, context: str = "", pres: Presentation |
         gear_rows.append(found if visible_len(found) <= inner else indent + label(r.loot))
         gear_rows += [indent + ln for ln in wrap(item_facts(r.loot), pad + 3)]
     if gear_rows:
-        body += [""] + gear_rows
+        body += [rule] + gear_rows
     parts.append("")
     return _layout(parts, pres, head + body)
 
@@ -295,8 +315,8 @@ def codex(store: Store) -> str:
     parts.append("== Achievements ==\n" + "\n".join(f"  - {label}" for label, _ in ACHIEVEMENTS.values()))
 
     heroes = sorted(store.all_characters(), key=lambda c: (-c.level, -c.xp, c.name))
-    rows = [[c.name, c.cls, c.level, c.xp, f"{c.wins}/{c.losses}", c.streak, c.kens] for c in heroes]
-    parts.append(table(f"Heroes in {store.root}", ["Name", "Class", "Lv", "XP", "W/L", "Streak", "'kens"], rows) if rows else f"== Heroes in {store.root} ==\n  (none yet)")
+    rows = [[c.name, c.cls, c.level, c.xp, f"{c.wins}/{c.losses}", c.streak, money(c.kens, False)] for c in heroes]
+    parts.append(table(f"Heroes in {store.root}", ["Name", "Class", "Lv", "XP", "W/L", "Streak", "Purse"], rows) if rows else f"== Heroes in {store.root} ==\n  (none yet)")
     return "\n\n".join(parts)
 
 
@@ -324,7 +344,7 @@ XP  {xp_bar(done, need)}
 GRAY {ch.gray}
 ```
 
-🪙 **{ch.kens:,} 'kens** · ⚔️ {ch.wins}W / {ch.losses}L ({rate}) · 🔥 streak {ch.streak} (best {ch.best_streak})
+{_coins_md(ch.kens)} · ⚔️ {ch.wins}W / {ch.losses}L ({rate}) · 🔥 streak {ch.streak} (best {ch.best_streak})
 
 **Last quest:** {ch.last_encounter or '-'}
 
@@ -421,7 +441,7 @@ def _summary_parts(ch: Character, r: Result, context: str, pres: Presentation) -
     rows = [
         ("Hero", f"**{ch.name}**, Level {ch.level} {ch.cls}"),
         ("XP", f"+{r.xp:,} ({ch.xp - _base(ch):,}/{ch.next_level_xp - _base(ch):,} to next level)"),
-        ("'kens", f"{ch.kens:,}" + (f" ({r.kens:+,d})" if r.kens else "")),
+        ("'kens", money(ch.kens, False) + (f" ({r.kens:+,d})" if r.kens else "")),
         ("Streak", f"{ch.streak} (best {ch.best_streak})"),
         ("Record", f"{ch.wins}W / {ch.losses}L ({rate})"),
     ]
@@ -559,7 +579,7 @@ def merchant_summary_md(ch: Character, v, bot: str, card_url: str = "", meeting:
         f"> A Traveling Merchant, summoned by {bot}, bumps into {ch.name}!  \n"
         f'> "I am buying anything you are not wearing. No questions asked."\n\n'
         f"{rolled}"
-        f"Bought {n} item{'s' if n != 1 else ''} from **{ch.name}** for {v.total:,} 'kens ({ch.kens:,} 'kens now). The merchant has no idea what they are for either.\n\n"
+        f"Bought {n} item{'s' if n != 1 else ''} from **{ch.name}** for {v.total:,} 'kens ({money(ch.kens)} now). The merchant has no idea what they are for either.\n\n"
         f"| Item | Price |\n|---|---|\n{sold}\n{_card_img(card_url, ch.name)}"
     )
 
@@ -592,10 +612,14 @@ def merchant_card(ch: Character, v, bot: str, pres: Presentation | None = None, 
     parts.append("")
     n = len(v.sold)
     lines = [f"{_s('MERCHANT', 208, color, True)}  {_s('Bought ' + str(n) + ' item' + ('s' if n != 1 else '') + ' from ' + ch.name, 255, color, True)}", ""]
+    rows = []
     for item, price in v.sold:
         name, rarity = items.parse(item)
-        gain = _s(f"+{price:,} 'kens", 220, color)
-        pad = max(46 - len(name) - len(rarity) - 3 - len(f"+{price:,} 'kens"), 1)
-        lines.append(item_tag(item, color) + " " + _s(rarity, 244, color, italic=True) + " " * pad + gain)
-    lines += ["", f"{_s(chr(0x25cf), 220, color)} {_s(f'{ch.kens:,} ' + chr(39) + 'kens', 220, color)} now ({_s(f'{v.total:+,d}', 77, color)})"]
+        rows.append((item_tag(item, color) + " " + _s(rarity, 244, color, italic=True), len(name) + len(rarity) + 3, f"+{price:,} 'kens", KENS_COLOR))
+    total = f"{money(ch.kens)} total"
+    rows.append(("", 0, "", 0))
+    rows.append((purse(ch.kens, color, " total"), len(total) + 2 * (1 + (ch.kens >= TOH and ch.kens % TOH > 0)), f"{v.total:+,d} 'kens", KENS_COLOR))
+    edge = max(w + 1 + len(amount) for _, w, amount, _c in rows)
+    for left, w, amount, shade in rows:
+        lines.append(left + " " * (edge - w - len(amount)) + _s(amount, shade, color) if amount else "")
     return _layout(parts, pres, lines)

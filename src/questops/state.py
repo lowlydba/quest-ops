@@ -46,6 +46,18 @@ def _renamed(name: str) -> str:
     return name
 
 
+TOH = 10_000  # 'kens in one toh ("toh 'kens", say it out loud)
+
+
+def money(kens: int, unit: bool = True) -> str:
+    """A purse as people read it: 12,345 becomes '1 toh 2,345 'kens'. Only balances roll up, never gains or prices."""
+    toh, rest = divmod(kens, TOH)
+    suffix = " 'kens" if unit else ""
+    if not toh:
+        return f"{kens:,}{suffix}"
+    return f"{toh:,} toh" + (f" {rest:,}{suffix}" if rest else "")
+
+
 def xp_for_level(level: int) -> int:
     return int(600 * (level - 1) ** 2.5)
 

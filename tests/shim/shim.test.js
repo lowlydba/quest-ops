@@ -157,6 +157,18 @@ test("omens are stable per run, all reachable, and all say the job decides", () 
   assert.equal(shim.omen(), shim.omen(""));
 });
 
+test("bots get a merchant omen, never a monster", () => {
+  assert.ok(shim.isBot("dependabot[bot]") && shim.isBot(" Renovate ") && shim.isBot("github-actions"));
+  assert.ok(!shim.isBot("octocat") && !shim.isBot(undefined));
+  const seen = new Set(Array.from({ length: 200 }, (_, i) => shim.omen(String(i), true)));
+  assert.equal(seen.size, shim.BOT_OMENS.length);
+  assert.ok(shim.BOT_OMENS.every((o) => /job/.test(o) && !/monster/i.test(o)));
+  resetEnv({ INPUT_PLAYER: "dependabot[bot]" });
+  assert.ok(shim.BOT_OMENS.some((o) => shim.omen("7") === `QuestOps: ${o}`));
+  resetEnv({ GITHUB_ACTOR: "octocat" });
+  assert.ok(shim.OMENS.some((o) => shim.omen("7") === `QuestOps: ${o}`));
+});
+
 test("post skips the encounter when the job result cannot be read", async (t) => {
   const lines = capture(t);
   resetEnv(apiEnv);

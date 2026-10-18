@@ -6,7 +6,19 @@
 
 QuestOps adds one classic text-dungeon encounter to the end of your workflow. It reads how the job went, rolls a monster, a treasure chest or a trap, and plays it out in the job log. Your hero levels up, earns 'kens (nobody knows what for), picks up loot and keeps a streak, all saved to a branch in your own repository.
 
-There's nothing to host and no account to make. It's one step in your workflow.
+There's nothing to host, no account to make and no dependencies to install (it runs on Python's standard library and a small Node shim). It's one step in your workflow.
+
+**Contents:** [Live demo](#try-the-live-demo) · [Where it comes from](#where-it-comes-from) · [Add it to a workflow](#add-it-to-a-workflow) · [How it plays](#how-it-plays) · [Meet the locals](#meet-the-locals) · [Show off your hero](#show-off-your-hero) · [Learn more](#learn-more)
+
+## Try the live demo
+
+This repository plays its own game on every push to main, so its data branch is a working example you can browse:
+
+- [Hall of Heroes](https://github.com/lowlydba/quest-ops/tree/questops-data): the leaderboard and every hero's card.
+- [Bestiary and reliquary](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/README.md): lore for every monster, item, set and spell.
+- [Quest log](https://github.com/lowlydba/quest-ops/blob/questops-data/QUESTLOG.md): every encounter so far.
+
+Pull requests get a one-off encounter as a single comment that later pushes edit (`comment: true`), without touching the leaderboard.
 
 ## Where it comes from
 
@@ -46,8 +58,8 @@ The encounter happens when the job finishes, after every other step, so it knows
 
 | Lint Goblin | Cache Slime | Wraith of the Flaky Test | Ancient Wyrm of Legacy Prod |
 |:-:|:-:|:-:|:-:|
-| <img src="docs/img/monsters/lint-goblin.svg" width="96"> | <img src="docs/img/monsters/cache-slime.svg" width="96"> | <img src="docs/img/monsters/wraith-of-the-flaky-test.svg" width="96"> | <img src="docs/img/monsters/ancient-wyrm-of-legacy-prod.svg" width="96"> |
-| *"Mmm, trailing whitespace."* | *"Never invalidated, always persisted."* | *"Pass... or fail... who can say?"* | *"YOU SHALL. NOT. MERGE."* |
+| <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/lint-goblin.md"><img src="docs/img/monsters/lint-goblin.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/cache-slime.md"><img src="docs/img/monsters/cache-slime.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/wraith-of-the-flaky-test.md"><img src="docs/img/monsters/wraith-of-the-flaky-test.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/ancient-wyrm-of-legacy-prod.md"><img src="docs/img/monsters/ancient-wyrm-of-legacy-prod.svg" width="96"></a> |
+| *"Mmm, trailing whitespace."* | *"Cache me outside. How bout stale?"* | *"Only a Sith deals in absolutes. I deal in retries."* | *"THIS BRANCH IS PROTECTED. SO AM I."* |
 
 Tougher "Senior" and "Skip Level" versions turn up as you increase your level. The data branch carries a full bestiary and reliquary, with lore for every monster and item.
 
@@ -65,21 +77,9 @@ They're static files, so there's no server, and they're as fresh as your last bu
 
 <br clear="right">
 
-## Try the live demo
-
-This repository plays its own game on every push to main, so its data branch is a working example you can browse:
-
-- [Hall of Heroes](https://github.com/lowlydba/quest-ops/tree/questops-data): the leaderboard and every hero's card.
-- [Bestiary and reliquary](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/README.md): lore for every monster, item, set and spell.
-- [Quest log](https://github.com/lowlydba/quest-ops/blob/questops-data/QUESTLOG.md): every encounter so far.
-
-Pull requests get a one-off encounter as a single comment that later pushes edit (`comment: true`), without touching the leaderboard.
-
 ## Learn more
 
 - [Setup and configuration](docs/setup.md): inputs, permissions, the data branch, other CI systems, Docker and the CLI.
 - [Recipes](docs/recipes.md): one leaderboard, several per repository, or one shared across repositories.
 - [How the game works](docs/gameplay.md): classes, stats, levels, loot, odds and the merchant.
 - [Development](docs/development.md): running the tests and how the project is put together.
-
-QuestOps runs on Python's standard library and a small Node shim, with no dependencies to install.

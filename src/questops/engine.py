@@ -23,21 +23,37 @@ MONSTERS = [
         "Let's align on tabs versus spaces. Offline. Forever.",
     )),
     ("Cache Slime", "slime", 1, 18, 9, 3, 5, 45, 10, (
-        "Never invalidated, always persisted.",
-        "I've been warm since the last migration.",
+        "Cache me outside. How bout stale?",
+        "I was fresh when you cloned. Trust me.",
         "Let's circle back once I expire. I never expire.",
     )),
     ("Wraith of the Flaky Test", "wraith", 3, 30, 13, 5, 8, 100, 30, (
-        "Pass... or fail... who can say?",
-        "Works on my machine. Fails on yours.",
+        "Only a Sith deals in absolutes. I deal in retries.",
+        "Re-run me. I'll be a different bug.",
         "Just mark me known-flaky and we'll revisit next quarter.",
     )),
     ("Ancient Wyrm of Legacy Prod", "dragon", 6, 60, 15, 7, 10, 250, 100, (
-        "YOU SHALL. NOT. MERGE.",
+        "THIS BRANCH IS PROTECTED. SO AM I.",
         "I WAS HERE BEFORE THE MONOREPO.",
-        "PER MY LAST EMAIL: YOU SHALL. NOT. MERGE.",
+        "PER MY LAST EMAIL: THIS BRANCH IS PROTECTED. SO AM I.",
     )),
 ]
+
+# Who says it, and how, per tier: the taunt reads `"I deal in retries," the wraith shrieks.`
+TAUNT_TAGS = {
+    "Lint Goblin": ("goblin", ("sniffs", "gloats", "unmutes")),
+    "Cache Slime": ("slime", ("gurgles", "burbles reassuringly", "oozes, unbothered")),
+    "Wraith of the Flaky Test": ("wraith", ("shrieks", "whispers", "sighs, checking its calendar")),
+    "Ancient Wyrm of Legacy Prod": ("wyrm", ("roars", "thunders", "booms, reply-all")),
+}
+
+
+def speech(base: str, tier: int, taunt: str) -> str:
+    """A taunt as a line of dialogue with a speaker tag; a closing full stop becomes the comma before it."""
+    noun, verbs = TAUNT_TAGS[base]
+    quoted = taunt[:-1] + "," if taunt.endswith(".") else taunt
+    return f'"{quoted}" the {noun} {verbs[tier]}.'
+
 
 # Higher tiers are palette-swapped, tougher versions of the same foe.
 # prefix, HP multiplier, reward multiplier, to-hit bonus, unlocks at hero level
@@ -118,7 +134,7 @@ def _combat(ch: Character, rng: random.Random, win: bool, r: Result) -> None:
     t = r.transcript
     t.append(Art(artkey, tier))
     t.append(Narration(f"A wild {name} appears! ({mhp} HP)"))
-    t.append(Narration(f'"{taunts[tier]}"'))
+    t.append(Narration(speech(base, tier, taunts[tier])))
     wielding = f"[{ch.wielding}]" if ch.main_hand else ch.wielding
     t.append(Narration(f"{ch.name} the {ch.cls} readies their {wielding}. ({ch.hp_max} HP, {ch.mp_max} MP, {ch.gray} GRAY)"))
     Fight(ch, rng, win, t, name, mhp, mac, mhit, mdie).run()

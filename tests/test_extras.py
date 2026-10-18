@@ -37,7 +37,7 @@ def test_colorize_hero_and_plain_text():
 
 def test_colorize_kens_and_item_labels():
     out = render.colorize_narration("Inside: 43 'kens and a [Ring of Retries]!", "ada")
-    assert out == f"Inside: {esc(chr(52) + chr(51) + ' ' + chr(39) + 'kens', 220)} and a {esc('[Ring of Retries]', 75, True)}!"
+    assert out == f"Inside: {esc(chr(52) + chr(51) + ' ' + chr(39) + 'kens', 172)} and a {esc('[Ring of Retries]', 75, True)}!"
     assert render.colorize_narration("a [Hotfix] and a [Rusty Dagger]", "") == f"a {esc('[Hotfix]', 75, True)} and a {esc('[Rusty Dagger]', 77, True)}"
     assert render.colorize_narration("the [Mystery Thing] is not an item", "") == "the [Mystery Thing] is not an item"
 
@@ -83,7 +83,7 @@ def test_coloured_transcript_paints_names_numbers_and_loot():
     r = Result("treasure", "t", True, [Narration("ada picks the lock (5+4). *click*"), Narration("Inside: 43 'kens and a [Ring of Retries]!")])
     text = render.transcript(ch, r, "", Presentation(color=True))
     assert esc("ada", 255, True) + " picks the lock (5+4)" in text
-    assert esc("43 'kens", 220) in text and esc("[Ring of Retries]", 75, True) in text
+    assert esc("43 'kens", 172) in text and esc("[Ring of Retries]", 75, True) in text
 
 
 # loot facts
@@ -142,11 +142,11 @@ def test_long_names_titles_and_achievements_wrap_instead_of_truncating():
     text = "\n".join(lines)
     assert "\u2026" not in text and "a-very-long-hero-name-for-layout-1234" in text and "the Wizard  Lv" in text
     assert "DEFEAT\n" in text.replace("  ", "\n", 1) or "| DEFEAT" in text
-    assert "Skip Level Ancient Wyrm of Legacy Prod" in text and "1,234,567 'kens (-123,456)" in text
+    assert "Skip Level Ancient Wyrm of Legacy Prod" in text and "\u25cf 123 toh \u25cf 4,567 'kens (-123,456)" in text
     assert "Achievement" not in text and all(len(ln) == 62 for ln in lines)  # the story carries achievements, not the card
     assert "Achievement unlocked: Skip Level Meeting (slew a Skip Level foe)" in render.transcript(ch, r, "", Presentation())
     coloured = render.transcript(ch, r, "", Presentation(color=True))
-    assert "1,234,567" in coloured and "\u2026" not in coloured
+    assert "123 toh" in coloured and "4,567" in coloured and "\u2026" not in coloured
 
 
 def test_nothing_is_said_about_zero_kens(monkeypatch):
@@ -503,3 +503,14 @@ def test_forced_roll_hook(monkeypatch, tmp_path):
     assert merchant.forced_roll() is None
     monkeypatch.delenv("QUESTOPS_MERCHANT_ROLL")
     assert merchant.forced_roll() is None
+
+
+def test_money_rolls_balances_up_into_toh():
+    from questops.state import money
+    assert money(9_999) == "9,999 'kens" and money(0) == "0 'kens"
+    assert money(10_000) == "1 toh" and money(10_000, False) == "1 toh"
+    assert money(12_345) == "1 toh 2,345 'kens" and money(12_345, False) == "1 toh 2,345"
+    from questops.render import purse
+    assert "\x1b[1;38;5;250m1 toh" in purse(12_345, True) and "\x1b[38;5;172m2,345 'kens" in purse(12_345, True)
+    assert purse(10_000, False) == "\u25cf 1 toh" and purse(500, False, " total") == "\u25cf 500 'kens total"
+    assert money(1_234_567) == "123 toh 4,567 'kens"

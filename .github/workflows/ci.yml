@@ -2,7 +2,9 @@ name: ci
 on:
   push:
     branches: [main]
+    paths-ignore: ["**/*.md", "docs/**", LICENSE]
   pull_request:
+    paths-ignore: ["**/*.md", "docs/**", LICENSE]
   workflow_dispatch:
 
 permissions: {}
@@ -23,8 +25,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # Windows minutes bill at 2x on a private repository, so it only runs the newest Python. macOS (10x) is skipped.
+        os: [ubuntu-latest]
         python: ["3.11", "3.14"]
+        include:
+          - { os: windows-latest, python: "3.14" }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

@@ -49,7 +49,7 @@ SETS = [
     ItemSet("Hotfix Friday", "Hotfix", "Cloak of Mild Inconvenience",
             "Hotfix backfires are absorbed: no damage to you.",
             "Ship it on Friday, wrap it in a cloak, and call the incident 'mild'. The postmortem has been rescheduled indefinitely."),
-    ItemSet("Dependency Hell", "Staff of Regex", "Lockfile Locket",
+    ItemSet("Dependency Hellfire", "Staff of Regex", "Lockfile Locket",
             "The Staff of Regex's 'matches too much' never hurts you.",
             "The lockfile pins every wildcard to a version nobody dares to bump. It is stable, in the way a fossil is stable."),
     ItemSet("Retry Loop", "Hard Reset", "Ring of Retries",

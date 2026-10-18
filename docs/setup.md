@@ -73,7 +73,7 @@ QuestOps creates the branch on first use, as an orphan branch with no shared his
 | `QUESTLOG.md` | The last 50 encounters, linked to their commits. |
 | `characters/<hero>.json` | The saved hero. This and the quest log are the source of truth. |
 | `characters/<hero>.svg` | The character card. |
-| `badges/<hero>/{level,kens,streak,record}.json` | shields.io endpoint badges. |
+| `badges/<hero>/{hero,level,kens,streak,record}.json` | shields.io endpoint badges. `hero` is the one-line combined badge. |
 | `log/quests.jsonl` | Every encounter, one JSON object per line. |
 | `lore/` | The bestiary and reliquary, with every monster and item, and their pixel art. |
 
@@ -83,8 +83,11 @@ Everything except the hero JSON and the quest log is generated. `questops rebuil
 
 ```markdown
 ![hero](https://raw.githubusercontent.com/OWNER/REPO/questops-data/characters/you.svg)
+![hero badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FOWNER%2FREPO%2Fquestops-data%2Fbadges%2Fyou%2Fhero.json)
 ![level](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FOWNER%2FREPO%2Fquestops-data%2Fbadges%2Fyou%2Flevel.json)
 ```
+
+The `hero` badge reads like `linus | Lv 4 Wizard · 1 toh 2,345 'kens`. shields.io draws the badges, so add `&style=flat-square` (or `flat`, `for-the-badge`) to the URL to change how tall and rounded they are. The card is one SVG that follows the viewer's light or dark colour scheme (`prefers-color-scheme`), so no second file is needed.
 
 Hero file names are the lowercase hero name, with anything other than letters, digits, `.`, `_` and `-` replaced by `-`.
 

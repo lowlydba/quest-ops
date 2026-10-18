@@ -3,7 +3,7 @@
 // (post-if: always()), works out how the job actually went, then runs QuestOps.
 "use strict";
 const fs = require("fs");
-const { env, log, warn } = require("./lib/env");
+const { env, input, log, warn } = require("./lib/env");
 const { jobOutcome } = require("./lib/jobs");
 const { python } = require("./lib/python");
 const { post } = require("./lib/post");
@@ -18,10 +18,24 @@ const OMENS = [
   "Far below, a monster stretches. It has until the end of this job to warm up.",
 ];
 
-function omen(seed = env.GITHUB_RUN_ID || "") {
+// Bots never fight, so they get a different rumour: a d20 decides whether a merchant shows up.
+const BOT_OMENS = [
+  "Wheels creak somewhere in the distance. A merchant may or may not turn up when this job finishes.",
+  "A bot is on the road. A d20 will be rolled when this job ends, and only a 20 summons the cart.",
+  "Coins jingle faintly down the corridor. Whether anyone arrives is up to the dice once the job is done.",
+];
+
+// Mirrors ci.is_bot in the Python package.
+function isBot(name) {
+  const n = String(name || "").trim().toLowerCase();
+  return n.endsWith("[bot]") || ["github-actions", "dependabot", "renovate", "ghost"].includes(n);
+}
+
+function omen(seed = env.GITHUB_RUN_ID || "", bot = isBot(input("player") || env.GITHUB_ACTOR)) {
   let h = 0;
   for (const c of String(seed)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return `QuestOps: ${OMENS[h % OMENS.length]}`;
+  const pool = bot ? BOT_OMENS : OMENS;
+  return `QuestOps: ${pool[h % pool.length]}`;
 }
 
 async function main() {
@@ -32,6 +46,6 @@ async function main() {
   await post();
 }
 
-module.exports = { jobOutcome, post, main, python, omen, OMENS };
+module.exports = { jobOutcome, post, main, python, omen, OMENS, BOT_OMENS, isBot };
 
 if (require.main === module) main().catch((e) => warn(e.message));

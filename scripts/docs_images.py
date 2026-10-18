@@ -20,8 +20,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from questops import svg  # noqa: E402
-from questops.engine import MONSTERS  # noqa: E402
+from questops.engine import ACHIEVEMENTS, MONSTERS, Result  # noqa: E402
 from questops.pages import sprite_svg  # noqa: E402
+from questops.scenes import pick_scene  # noqa: E402
 from questops.state import Character, Store, slug  # noqa: E402
 
 OUT = ROOT / "docs" / "img"
@@ -38,16 +39,21 @@ def seasoned_hero(store: Store) -> Character:
     ch = store.load(HERO)
     ch.level, ch.xp = 4, 13000
     ch.wins, ch.losses, ch.encounters, ch.streak, ch.best_streak = 41, 6, 47, 7, 12
-    ch.kens = 412
+    ch.kens = 12345  # shows off a toh
     ch.kills = {"Lint Goblin": 19, "Cache Slime": 14, "Wraith of the Flaky Test": 5}
     ch.main_hand, ch.accessory = "Staff of Regex [rare]", "Lockfile Locket [rare]"
     ch.inventory = ["Intern's Staff [common]", "Lucky Rubber Duck [common]"]
+    # A veteran has already earned what their record says, so a fresh win does not unlock old news (like Lint Roller mid-wraith).
+    blank = Result("combat", "", True)
+    ch.achievements = [label for label, test in ACHIEVEMENTS.values() if test(ch, blank)]
     return ch
 
 
 def encounter_ansi() -> tuple[str, Character]:
     """Play seeded quests with a seasoned hero until one is a won fight with spells; return its coloured transcript."""
     for n in range(500):
+        if pick_scene(f"docs-{n}") == "stairs":  # its stained glass is busy behind the foe; pick a calmer room
+            continue
         with tempfile.TemporaryDirectory() as tmp:
             store = Store(Path(tmp))
             store.save(seasoned_hero(store))

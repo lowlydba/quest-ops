@@ -12,7 +12,7 @@ When a job finishes, its result decides what happens next:
 
 A failing run is always a loss. A passing run is usually a win, but the dungeon still rolls dice. The Ring of Retries makes a passing fight a sure win.
 
-A win earns XP, 'kens and sometimes loot, and extends your streak. A loss earns a little XP, drops a tenth of your 'kens and breaks the streak. A cancelled or skipped job plays nothing. There is nothing to spend 'kens on, and nobody has a theory about what they are for, but the number going up feels correct.
+A win earns XP, 'kens and sometimes loot, and extends your streak. A loss earns a little XP, drops a tenth of your 'kens and breaks the streak. A cancelled or skipped job plays nothing. There is nothing to spend 'kens on, and nobody has a theory about what they are for, but the number going up feels correct. Balances over 10,000 roll up into **toh** ("toh 'kens", say it out loud). 'kens are bronze and a toh is silver, so 12,345 'kens reads as 1 toh 2,345 'kens. Gains, prices and the stored total stay in plain 'kens.
 
 Each hero plays once per commit, so re-running a workflow can't farm wins or stack losses.
 
@@ -44,53 +44,17 @@ The data branch's bestiary has every foe, its tiers and its lore.
 
 You wield one weapon and wear one accessory. A new item is equipped automatically when it's rarer than what you have; otherwise it goes in your bag. A spare of something you already own is sold on the spot for the merchant's price. Weapons are class-locked, while accessories suit anyone. When a quest finds an item, the output shows its stats, any set it belongs to, and whether it was equipped or bagged and why.
 
-| Weapon | Class | Rarity | Damage | Effect |
-|---|---|---|---|---|
-| Rusty Dagger | Rogue | common | +2 | |
-| Hotfix | Rogue | rare | +5 | About one swing in eight backfires on you. |
-| Sudo Shiv | Rogue | legendary | +7 | Your first attack each fight ignores armour and can't miss. |
-| Squeaky Mallet | Fighter | common | +2 | |
-| Local Bludgeon | Fighter | uncommon | +0 | Each round, a 25% chance of a one-hit KO. Otherwise it backfires. |
-| Hard Reset | Fighter | rare | +6 | |
-| Force Merge | Fighter | rare | +4 | Once per fight, ignores one failing result: a miss becomes a hit, or a hit on you is waved through. |
-| Intern's Staff | Wizard | common | +0 | Lets a Wizard cast. |
-| Staff of Regex | Wizard | rare | +1 | Spells cost 1 MP less, but about one cast in six matches too much and hurts you too. |
-| Staff of Eventual Consistency | Wizard | rare | +2 | Lets a Wizard cast. |
-
-| Accessory | Rarity | Effect |
-|---|---|---|
-| Lucky Rubber Duck | common | +1 GRAY. |
-| Dependabot Charm | uncommon | Once per fight, a missed attack is rerolled. |
-| Cloak of Mild Inconvenience | uncommon | Takes 1 off every hit you take. |
-| Ring of Retries | rare | A passing fight is always won in round 3, at -2 to hit in the first two rounds. It can't rescue a failing run. |
-| Lockfile Locket | rare | Blocks the first hit a foe lands on you each fight. |
-| Crown of the Main Branch | legendary | +1 to hit. |
+Every weapon and accessory, with its damage, rarity, effect and lore, is in the data branch's [reliquary](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/README.md), or run `questops codex`.
 
 ### Sets
 
-Wear both halves of a set and its bonus applies. The active set shows on your card.
-
-| Set | Weapon + accessory | Bonus |
-|---|---|---|
-| Hotfix Friday | Hotfix + Cloak of Mild Inconvenience | Hotfix backfires are absorbed. |
-| Dependency Hell | Staff of Regex + Lockfile Locket | "Matches too much" never hurts you. |
-| Retry Loop | Hard Reset + Ring of Retries | No -2 to hit from the Ring. |
-| Pair Programming | Squeaky Mallet + Lucky Rubber Duck | +1 to hit in round 1. |
-| Zero Trust | Sudo Shiv + Lockfile Locket | Every attack ignores armour. |
+Wear both halves of a set and its bonus applies. The active set shows on your card. The reliquary lists every set and its bonus.
 
 ## Spells
 
 Only Wizards cast, and only with a staff in hand. A Wizard without a staff fights bare-handed. Spells unlock by level, and each round the Wizard casts one they've unlocked and can afford. Spell damage adds the staff's bonus. The last round is always Jade.
 
-| Spell | Unlocks | MP | Effect |
-|---|---|---|---|
-| Jade | Lv 1 | 2 | A plain bolt. About half the time it leaves the foe Weary, which looks dramatic and does nothing. |
-| Confuse | Lv 2 | 2 | No damage, but the foe's attack this round misses. |
-| Hard Block | Lv 3 | 2 | No damage, but a ward absorbs the foe's attack this round. |
-| Refactor | Lv 4 | 3 | The staff becomes a random other weapon for a round. Next round you attack with it, quirks included, then it reverts. |
-| Supply Chain Attack | Lv 5 | 4 | Two hits in one round. The second hits harder if the first landed. |
-| Pre-commit | Lv 6 | 5 | Gather energy this round. Next round's attack is a guaranteed critical. |
-| Zoltraak | Lv 7 | 4 | One big hit, about twice a normal hit's damage dice. |
+Every spell, with its unlock level, MP cost, effect and lore, is in the data branch's [Spellbook](https://github.com/lowlydba/quest-ops/blob/questops-data/lore/spellbook.md), or run `questops codex`.
 
 ## Bots and the traveling merchant
 

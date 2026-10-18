@@ -190,7 +190,7 @@ def test_staff_of_regex_makes_spells_cheaper_and_sometimes_hits_the_caster():
     assert "matches too much" not in f.hero_turn()[0]
     f = fight(hero(main="Staff of Regex [rare]", acc="Lockfile Locket [rare]"), Dice(ints=[15, 2], floats=[0.1], choices=[JADE]))
     mine, _ = f.hero_turn()
-    assert "the lockfile pins it" in mine and f.hp == f.ch.hp_max  # Dependency Hell
+    assert "the lockfile pins it" in mine and f.hp == f.ch.hp_max  # Dependency Hellfire
 
 
 # weapons and accessories

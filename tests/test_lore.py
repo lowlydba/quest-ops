@@ -67,12 +67,15 @@ def test_every_tier_has_its_own_taunt():
 
     for m in MONSTERS:
         assert len(m[9]) == len(TIERS) and len(set(m[9])) == len(TIERS), m[0]
+        assert len(engine.TAUNT_TAGS[m[0]][1]) == len(TIERS), m[0]
+    assert engine.speech("Cache Slime", 0, "Ends loud!") == '"Ends loud!" the slime gurgles.'
+    assert engine.speech("Lint Goblin", 0, "A stop.") == '"A stop," the goblin sniffs.'
     heard = {}
     for n in range(400):
         ch = Character.create("taunt-probe")
         ch.level = 12
         r = engine.run_encounter(ch, True, random.Random(n), "combat")
         mon = next(m for m in MONSTERS if r.foe.endswith(m[0]))
-        heard[(mon[0], r.tier)] = any(e.text == f'"{mon[9][r.tier]}"' for e in r.transcript if hasattr(e, "text"))
+        heard[(mon[0], r.tier)] = any(e.text == engine.speech(mon[0], r.tier, mon[9][r.tier]) for e in r.transcript if hasattr(e, "text"))
     assert heard and all(heard.values())
     assert {t for _, t in heard} == {0, 1, 2}

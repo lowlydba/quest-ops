@@ -129,7 +129,7 @@ class Fight:
             mod -= 2
         misfire = ""
         if spell and self.regex and rng.random() < REGEX_MISFIRE:
-            if self.set == "Dependency Hell":
+            if self.set == "Dependency Hellfire":
                 misfire = ", but the lockfile pins it and nothing extra matches"
             else:
                 misfire = f", but it matches too much and hits {ch.name} for {self.hurt_self()}"
