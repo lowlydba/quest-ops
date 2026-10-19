@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from questops import svg  # noqa: E402
 from questops.engine import ACHIEVEMENTS, MONSTERS, Result  # noqa: E402
-from questops.pages import sprite_svg  # noqa: E402
+from questops.pages import merchant_svg, sprite_svg  # noqa: E402
 from questops.scenes import pick_scene  # noqa: E402
 from questops.state import Character, Store, slug  # noqa: E402
 
@@ -156,6 +156,7 @@ def main() -> None:
     write("card.svg", svg.card(hero))
     for name, key, *_ in MONSTERS:
         write(f"monsters/{slug(name)}.svg", sprite_svg("monster", key))
+    write("monsters/traveling-merchant.svg", merchant_svg("github-actions[bot]"))
 
 
 if __name__ == "__main__":
