@@ -56,12 +56,12 @@ The encounter happens when the job finishes, after every other step, so it knows
 
 ## Meet the locals
 
-| Lint Goblin | Cache Slime | Wraith of the Flaky Test | Ancient Wyrm of Legacy Prod |
-|:-:|:-:|:-:|:-:|
-| <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/lint-goblin.md"><img src="docs/img/monsters/lint-goblin.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/cache-slime.md"><img src="docs/img/monsters/cache-slime.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/wraith-of-the-flaky-test.md"><img src="docs/img/monsters/wraith-of-the-flaky-test.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/ancient-wyrm-of-legacy-prod.md"><img src="docs/img/monsters/ancient-wyrm-of-legacy-prod.svg" width="96"></a> |
-| *"Mmm, trailing whitespace."* | *"Cache me outside. How bout stale?"* | *"Only a Sith deals in absolutes. I deal in retries."* | *"THIS BRANCH IS PROTECTED. SO AM I."* |
+| Lint Goblin | Cache Slime | Wraith of the Flaky Test | Ancient Wyrm of Legacy Prod | Traveling Merchant |
+|:-:|:-:|:-:|:-:|:-:|
+| <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/lint-goblin.md"><img src="docs/img/monsters/lint-goblin.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/cache-slime.md"><img src="docs/img/monsters/cache-slime.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/wraith-of-the-flaky-test.md"><img src="docs/img/monsters/wraith-of-the-flaky-test.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/monsters/ancient-wyrm-of-legacy-prod.md"><img src="docs/img/monsters/ancient-wyrm-of-legacy-prod.svg" width="96"></a> | <a href="https://github.com/lowlydba/quest-ops/blob/questops-data/lore/npcs/traveling-merchant.md"><img src="docs/img/monsters/traveling-merchant.svg" alt="Traveling Merchant lore" width="96"></a> |
+| *"Mmm, trailing whitespace."* | *"Cache me outside. How bout stale?"* | *"Only a Sith deals in absolutes. I deal in retries."* | *"THIS BRANCH IS PROTECTED. SO AM I."* | *"No questions. Fair prices."* |
 
-Tougher "Senior" and "Skip Level" versions turn up as you increase your level. The data branch carries a full bestiary and reliquary, with lore for every monster and item.
+Tougher "Senior" and "Skip Level" versions turn up as you increase your level. The merchant only shows up when a bot finishes its work. The data branch carries a full bestiary and reliquary, with lore for every monster and item.
 
 ## Show off your hero
 
