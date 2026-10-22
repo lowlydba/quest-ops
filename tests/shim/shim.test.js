@@ -83,7 +83,7 @@ test("jobOutcome ignores finished jobs and fails on zero or several candidates",
   resetEnv({ ...apiEnv, QUESTOPS_JOB_RETRY_MS: "1" });
   const calls = mockJobs(t, [job(["success"], { status: "completed", name: "build" })]);
   await assert.rejects(shim.jobOutcome(), /0 candidates for runner "runner-1"; API shows: build:completed:runner-1/);
-  assert.equal(calls.length, 5);
+  assert.equal(calls.length, 12);
   t.mock.restoreAll();
   mockJobs(t, [job([]), job([])]);
   await assert.rejects(shim.jobOutcome(), /2 candidates/);
@@ -111,12 +111,17 @@ test("jobOutcome gives up waiting on a step that never settles and reads what it
   resetEnv({ ...apiEnv, QUESTOPS_JOB_RETRY_MS: "1" });
   const calls = mockJobs(t, [job([], { steps: [{ name: "Run x", status: "in_progress", conclusion: null }] })]);
   assert.equal(await shim.jobOutcome(), "success");
-  assert.equal(calls.length, 5);
+  assert.equal(calls.length, 12);
 });
 
 test("jobOutcome retries while the API has not caught up, using the default delay", async (t) => {
   resetEnv(apiEnv);
   let call = 0;
+  const delays = [];
+  t.mock.method(globalThis, "setTimeout", (fn, ms) => {
+    delays.push(ms);
+    fn();
+  });
   t.mock.method(globalThis, "fetch", async () => ({
     ok: true,
     status: 200,
@@ -124,6 +129,7 @@ test("jobOutcome retries while the API has not caught up, using the default dela
   }));
   assert.equal(await shim.jobOutcome(), "failure");
   assert.equal(call, 2);
+  assert.deepEqual(delays, [5000]);
 });
 
 test("jobOutcome explains a rejected token", async (t) => {
