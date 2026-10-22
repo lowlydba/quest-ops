@@ -3,16 +3,17 @@
   "achievements": [
     "Crowned (equipped the Crown)"
   ],
-  "best_streak": 5,
+  "best_streak": 6,
   "cls": "Wizard",
-  "encounters": 7,
+  "encounters": 8,
   "inventory": [
     "Intern's Staff [common]",
-    "Squeaky Mallet [common]"
+    "Squeaky Mallet [common]",
+    "Lucky Rubber Duck [common]"
   ],
-  "kens": 143,
+  "kens": 156,
   "kills": {
-    "Cache Slime": 2,
+    "Cache Slime": 3,
     "Lint Goblin": 1
   },
   "last_encounter": "Slew the Cache Slime",
@@ -21,8 +22,8 @@
   "losses": 1,
   "main_hand": "Staff of Regex [rare]",
   "name": "lowlydba",
-  "streak": 5,
+  "streak": 6,
   "titles": [],
-  "wins": 6,
-  "xp": 372
+  "wins": 7,
+  "xp": 439
 }
