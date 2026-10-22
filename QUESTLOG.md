@@ -2,6 +2,7 @@
 
 | When (UTC) | Hero | Result | Encounter | XP | Commit | Quest |
 |---|---|---|---|---|---|---|
+| 2026-10-22 16:11 | e2e-lose | ❌ | Defeated by the Cache Slime | 5 | [`46392fc`](https://github.com/lowlydba/quest-ops/commit/46392fcd4b54561e534116d0c427821ebfc51d69) | lowlydba/quest-ops / e2e |
 | 2026-10-22 16:11 | e2e-soft | ✅ | Slew the Cache Slime | 45 | [`46392fc`](https://github.com/lowlydba/quest-ops/commit/46392fcd4b54561e534116d0c427821ebfc51d69) | lowlydba/quest-ops / e2e |
 | 2026-10-22 16:11 | e2e-dup | ✅ | Disarmed a trap | 55 | [`46392fc`](https://github.com/lowlydba/quest-ops/commit/46392fcd4b54561e534116d0c427821ebfc51d69) | lowlydba/quest-ops / e2e |
 | 2026-10-22 16:11 | e2e-hero-1 | ❌ | Defeated by the Lint Goblin | 5 | [`46392fc`](https://github.com/lowlydba/quest-ops/commit/46392fcd4b54561e534116d0c427821ebfc51d69) | lowlydba/quest-ops / e2e |
