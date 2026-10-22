@@ -44,7 +44,7 @@ For a local smoke run with [act](https://github.com/nektos/act), which can't rea
 | `QUESTOPS_MERCHANT_ODDS` | Chance of the traveling merchant, `0` to `1`. |
 | `QUESTOPS_MERCHANT_ROLL` | Fixes a bot's d20 roll, `1` to `20`. |
 | `QUESTOPS_RETRY_DELAY_MS` | Fixed backoff between data branch push retries. |
-| `QUESTOPS_JOB_RETRY_MS` | Delay between Actions API retries while a job's steps settle. |
+| `QUESTOPS_JOB_RETRY_MS` | Delay between Actions API retries while a job's steps settle (default 5000, up to 12 tries). |
 
 ## README images
 
