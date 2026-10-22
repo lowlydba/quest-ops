@@ -1,0 +1,22 @@
+{
+  "accessory": "",
+  "achievements": [],
+  "best_streak": 1,
+  "cls": "Fighter",
+  "encounters": 1,
+  "inventory": [],
+  "kens": 28,
+  "kills": {
+    "Lint Goblin": 1
+  },
+  "last_encounter": "Slew the Lint Goblin",
+  "level": 1,
+  "loss_run": 0,
+  "losses": 0,
+  "main_hand": "",
+  "name": "e2e-hero-3",
+  "streak": 1,
+  "titles": [],
+  "wins": 1,
+  "xp": 50
+}
