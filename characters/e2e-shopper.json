@@ -1,0 +1,24 @@
+{
+  "accessory": "",
+  "achievements": [],
+  "best_streak": 0,
+  "cls": "Rogue",
+  "encounters": 0,
+  "inventory": [
+    "Rusty Dagger [common]",
+    "Lucky Rubber Duck [common]",
+    "Cloak of Mild Inconvenience [uncommon]"
+  ],
+  "kens": 10,
+  "kills": {},
+  "last_encounter": "",
+  "level": 1,
+  "loss_run": 0,
+  "losses": 0,
+  "main_hand": "",
+  "name": "e2e-shopper",
+  "streak": 0,
+  "titles": [],
+  "wins": 0,
+  "xp": 0
+}
