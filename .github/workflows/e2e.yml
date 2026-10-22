@@ -258,12 +258,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # deletes superseded throwaway data branches
+      actions: read # lists in-progress runs so their branches are left alone
     steps:
-      # The newest run's branches stay so the job summaries' card images can still be inspected.
+      # The newest run's branches stay so the job summaries' card images can still be inspected. A branch that
+      # belongs to another run still in progress stays too, or that run's verify job loses its data.
       - run: |
+          active=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?status=in_progress&per_page=100" \
+            --jq '.workflow_runs[] | select(.name == "e2e") | .id')
           gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/e2e-" --jq '.[].ref | sub("^refs/heads/"; "")' \
             | grep -vxF -e "$DATA_BRANCH" -e "$DATA_BRANCH-merchant" -e "$DATA_BRANCH-gift" \
             | while read -r branch; do
+                run_id=${branch#e2e-}
+                run_id=${run_id%%-*}
+                if grep -qxF "$run_id" <<<"$active"; then continue; fi
                 gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch" || true
               done
         env:
