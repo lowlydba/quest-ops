@@ -1,0 +1,22 @@
+{
+  "accessory": "",
+  "achievements": [],
+  "best_streak": 1,
+  "cls": "Fighter",
+  "encounters": 1,
+  "inventory": [],
+  "kens": 23,
+  "kills": {
+    "Cache Slime": 1
+  },
+  "last_encounter": "Slew the Cache Slime",
+  "level": 1,
+  "loss_run": 0,
+  "losses": 0,
+  "main_hand": "",
+  "name": "e2e-win",
+  "streak": 1,
+  "titles": [],
+  "wins": 1,
+  "xp": 45
+}

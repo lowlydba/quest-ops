@@ -6,11 +6,12 @@
 |---|---|---|---|---|---|---|---|
 | 🥇 | [e2e-hero-2](characters/e2e-hero-2.svg) | Fighter | 1 | 60 | 1/0 | 1 | [Squeaky Mallet](lore/items/squeaky-mallet.md) |
 | 🥈 | [e2e-hero-5](characters/e2e-hero-5.svg) | Rogue | 1 | 45 | 1/0 | 1 | - |
-| 🥉 | [e2e-hero-4](characters/e2e-hero-4.svg) | Fighter | 1 | 5 | 0/1 | 0 | - |
+| 🥉 | [e2e-win](characters/e2e-win.svg) | Fighter | 1 | 45 | 1/0 | 1 | - |
+| 4. | [e2e-hero-4](characters/e2e-hero-4.svg) | Fighter | 1 | 5 | 0/1 | 0 | - |
 
 <table>
 <tr><td width="50%" valign="top"><img src="characters/e2e-hero-2.svg" alt="e2e-hero-2" width="100%"></td><td width="50%" valign="top"><img src="characters/e2e-hero-5.svg" alt="e2e-hero-5" width="100%"></td></tr>
-<tr><td width="50%" valign="top"><img src="characters/e2e-hero-4.svg" alt="e2e-hero-4" width="100%"></td><td width="50%"></td></tr>
+<tr><td width="50%" valign="top"><img src="characters/e2e-win.svg" alt="e2e-win" width="100%"></td><td width="50%" valign="top"><img src="characters/e2e-hero-4.svg" alt="e2e-hero-4" width="100%"></td></tr>
 </table>
 
 📖 [Bestiary and reliquary](lore/README.md) · 📜 [Quest log](QUESTLOG.md)
