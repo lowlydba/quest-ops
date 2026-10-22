@@ -4,12 +4,8 @@
   "best_streak": 0,
   "cls": "Rogue",
   "encounters": 0,
-  "inventory": [
-    "Rusty Dagger [common]",
-    "Lucky Rubber Duck [common]",
-    "Cloak of Mild Inconvenience [uncommon]"
-  ],
-  "kens": 10,
+  "inventory": [],
+  "kens": 85,
   "kills": {},
   "last_encounter": "",
   "level": 1,
